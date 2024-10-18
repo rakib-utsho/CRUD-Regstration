@@ -10,16 +10,42 @@
     <title>Sign UP</title>
 </head>
 <body>
+    <?php
+        require('./conection.php');
+        if (isset($_POST['signUP_button'])) {
+            $firstName=$_POST['firstName'];
+            $lastName=$_POST['lastName'];
+            $email=$_POST['email'];
+            $password=$_POST['password'];
+            $confPassword=$_POST['confPassword'];
+            if(!empty($_POST['firstName'])&& !empty($_POST['lastName']) && !empty($_POST['email'])&& !empty($_POST['password'])){
+               if ($password==$confPassword) {
+                $p=crud::conect()->prepare('INSERT INTO crudtable(firstName,lastName,email,pass) VALUES(:f,:l,:e,:p)');
+                $p->bindValue(':f', $firstName);
+                $p->bindValue(':l', $lastName);
+                $p->bindValue(':e', $email);
+                $p->bindValue(':p', $password);
+                $p->execute();
+                echo 'Registration Successful!';
+               }else{
+                 echo 'Password dose not match!';
+               }
+            }
+        }
+
+    ?>
+
+
 <div class="form">
     <div class="title">
         <p>Sign UP Form</p>
     </div>
     <form action="" method="post">
-        <input type="text" name="name" placeholder="First Name">
-        <input type="text" name="lastName" placeholder="Last Name">
-        <input type="email" name="email" placeholder="Enter Your Email">
-        <input type="password" name="password" placeholder="Enter Password">
-        <input type="password" name="confiPassword" placeholder="Confirm Password">
+        <input type="text" name="firstName" placeholder="First Name" required>
+        <input type="text" name="lastName" placeholder="Last Name" required>
+        <input type="email" name="email" placeholder="Enter Your Email" required>
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <input type="password" name="confPassword" placeholder="Confirm Password" required>
         <input type="submit" value="Sign UP" name="signUP_button" id="signUP">
     </form>
 </div>
