@@ -16,6 +16,32 @@
     </style>
 </head>
 <body>
+
+<?php
+    require('./conection.php');
+        if(isset($_POST['login_button'])) {
+            $_SESSION['validate']=false;
+            $email=$_POST['email'];
+            $password=$_POST['password'];
+            $p=crud::conect()->prepare('SELECT *FROM crudtable WHERE email=:e AND pass=:p');
+            $p->bindValue(':e', $email);
+            $p->bindValue(':p', $password);
+            $p->execute();
+            $p->fetchAll(PDO::FETCH_ASSOC);
+            if($p->rowCount()>0){
+                $_SESSION['email']=$email;
+                $_SESSION['pass']=$password;
+                $_SESSION['validate']=true;
+                header('location:user.php');
+            }else{
+                echo 'Make sure that you are registered!';
+            }
+            
+        }
+
+?>
+
+
 <div class="form">
     <div class="title">
         <p>Login</p>

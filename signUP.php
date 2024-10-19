@@ -26,7 +26,7 @@
                 $p->bindValue(':e', $email);
                 $p->bindValue(':p', $password);
                 $p->execute();
-                echo 'Registration Successful!';
+                header('location:login.php');
                }else{
                  echo 'Password dose not match!';
                }
